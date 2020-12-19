@@ -1,5 +1,5 @@
 class Paddle {
-  // Constructor, initializes vairables
+  // Constructor, initializes vairables.
   constructor (x,y, width, height) {
     this.x = x;
     this.y = y;
@@ -8,7 +8,7 @@ class Paddle {
     this.y_speed = 0;
   }
 
-  // Render method, createss the paddle
+  // Render method, creates the paddle.
   render() {
     context.beginPath();
     context.rect(this.x, this.y, this.width, this.height);
@@ -18,20 +18,30 @@ class Paddle {
 
   // Update method, updates paddle's position.
   update() {
-    // checks if bar is moving above the top
+    // Checks if the paddle is moving above the top of the canvas.
     if (this.y < 0){
-      this.y += 3
+      this.y += 3;
     }
-    // checks if bar is moving below the bottom
+    // Checks if the paddle is moving below the bottom of the canvas.
     else if (this.y + canvas.height/10 > canvas.height){
-      this.y -= 3
+      this.y -= 3;
     }
-    // movement
-    this.y += this.y_speed;
+
+    //
+    paddle2.y_speed = -((paddle2.y + (paddle2.height / 2)) - ball.y);
+    if(paddle2.y_speed < 0 && paddle2.y_speed < -3) { // max speed up
+      paddle2.y_speed = -3;
+    }
+    else if(paddle2.y_speed > 0 && paddle2.y_speed > 3) { // max speed down
+      paddle2.y_speed = 3;
+    }
+
+    this.y += this.y_speed; // movement
   }
 }
 
 class Ball {
+  // Constructor, initializes variables
   constructor (x,y) {
     this.x = x;
     this.y = y;
@@ -40,19 +50,22 @@ class Ball {
     this.radius = 12;
   }
 
+  // Render method, creates the ball;
   render() {
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     context.fillStyle = "#000000";
     context.fill();
   }
+
+  // Update method updates position of the ball.
   update(){
-    this.x += this.x_speed
-    this.y += this.y_speed
+    this.x += this.x_speed;
+    this.y += this.y_speed;
     var top_x = this.x - 12;
     var top_y = this.y - 12;
     var bottom_x = this.x +12;
-    var bottom_y = this.y +12
+    var bottom_y = this.y +12;
 
     // The ball hit the top wall.
     if(top_y < 0) {
@@ -129,8 +142,12 @@ function drawAll() {
   Inputs: None, but it is affected by calling other functions.
   Returns: None, but it calls itself to cycle to the next frame.
 */
-  context.clearRect(0, 0, canvas.width, canvas.height)
+  // Clears canvas.
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Calls update function.
   update();
+
   paddle1.render();
   paddle2.render();
   ball.render();
